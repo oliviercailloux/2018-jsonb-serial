@@ -12,12 +12,12 @@ public class Persons {
 	@SuppressWarnings("unused")
 	private static final Logger LOGGER = LoggerFactory.getLogger(Persons.class);
 
+	@SuppressWarnings("unused")
 	@JsonbCreator
 	public static Persons wrap(@JsonbProperty("persons") Set<Person> persons) {
-		final Set<?> persons2 = persons;
-		final Class<?> class1 = persons2.iterator().next().getClass();
-		LOGGER.info("Received inner type: {}.", class1);
-		final Class<?> classCrashes = persons.iterator().next().getClass();
+		final Object person = persons.iterator().next();
+		LOGGER.info("Received type {}, content {}.", person.getClass(), person);
+		final Person crashingPerson = persons.iterator().next();
 		return null;
 	}
 

@@ -1,5 +1,7 @@
 package io.github.oliviercailloux.y2018.jsonb_serial;
 
+import static org.junit.jupiter.api.Assertions.assertTrue;
+
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.Set;
@@ -22,18 +24,20 @@ class PersonsTest {
 		LOGGER.info("Param: {}.", params[0]);
 		final String json = "{\"persons\": [{\"name\": \"name1\"}]}";
 		LOGGER.info("Deserializing {} as Persons.", json);
-		@SuppressWarnings("resource")
-		Jsonb jsonb = JsonbBuilder.create();
-		jsonb.fromJson(json, Persons.class);
+		try (Jsonb jsonb = JsonbBuilder.create()) {
+			jsonb.fromJson(json, Persons.class);
+		}
 	}
 
+	@SuppressWarnings("cast")
 	@Test
 	public void shouldDeserializePerson() throws Exception {
 		final String json = "{\"name\": \"name1\"}";
 		LOGGER.info("Deserializing {} as Person.", json);
-		@SuppressWarnings("resource")
-		Jsonb jsonb = JsonbBuilder.create();
-		jsonb.fromJson(json, Person.class);
+		try (Jsonb jsonb = JsonbBuilder.create()) {
+			final Person person = jsonb.fromJson(json, Person.class);
+			assertTrue(person instanceof Person);
+		}
 	}
 
 }
